@@ -2,13 +2,12 @@ package br.com.fiap.banco.view;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
 import br.com.fiap.banco.dao.ProdutoDao;
 import br.com.fiap.banco.factory.ConnectionFactory;
 import br.com.fiap.banco.model.Produto;
 
-public class TesteListar {
+public class TesteAtualizar {
 
 	public static void main(String[] args) {
 
@@ -17,23 +16,24 @@ public class TesteListar {
 			conn = ConnectionFactory.getConnection();
 			// Instanciar o ProdutoDao
 			ProdutoDao dao = new ProdutoDao(conn);
-			// Chamar o listar
-			List<Produto> lista = dao.listar();
-			// Exibir todos os produtos encontrados
-			for (Produto p : lista) {
-				System.out.println(p.getCodigo() + " " + p.getNome() + " " + p.getEstoque() + p.getValorCompra() + " "
-						+ p.getValorVenda());
-			}
 
+			// Instanciar um Produto
+			Produto produto = new Produto(8, "Bola", 100, 50, 15);
+
+			// Chamar o método atualizar
+			dao.atualizar(produto);
+
+			System.out.println("Produto atualizado!");
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		} finally {
-			if (conn != null)
-				try {
+			try {
+				if (conn != null)
 					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
+
 	}
 }

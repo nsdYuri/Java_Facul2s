@@ -2,38 +2,36 @@ package br.com.fiap.banco.view;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.List;
 
 import br.com.fiap.banco.dao.ProdutoDao;
 import br.com.fiap.banco.factory.ConnectionFactory;
 import br.com.fiap.banco.model.Produto;
 
-public class TesteListar {
+//View
+public class TesteCadastrar {
 
 	public static void main(String[] args) {
+
+		// Instanciar um produto (a ideia eh que o usuário informe os dados)
+		Produto produto = new Produto(8, "Fone de ouvido", 100, 20, 40);
 
 		Connection conn = null;
 		try {
 			conn = ConnectionFactory.getConnection();
-			// Instanciar o ProdutoDao
+			// Instanciar o objeto que é capaz de realizar as açoes no banco de dados
 			ProdutoDao dao = new ProdutoDao(conn);
-			// Chamar o listar
-			List<Produto> lista = dao.listar();
-			// Exibir todos os produtos encontrados
-			for (Produto p : lista) {
-				System.out.println(p.getCodigo() + " " + p.getNome() + " " + p.getEstoque() + p.getValorCompra() + " "
-						+ p.getValorVenda());
-			}
-
+			// Gravar no banco
+			dao.cadastrar(produto);
+			System.out.println("Gravado!");
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			if (conn != null)
-				try {
+			try {
+				if (conn != null)
 					conn.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
